@@ -9,13 +9,13 @@ de la BBDD desde cero en cada intento:
 
 */
 
-USE master; -- Aún no hemos visto esto en clase pero como he tenido tantos problemas con permisos, esta linea me permite tener permisos de administración global
-GO  -- El GO ejecuta todo lo anterior ahora mismo y espera a que termine antes de seguir con lo que hay después, en sql server lo necesito poner
+USE master; -- AÃºn no hemos visto esto en clase pero como he tenido tantos problemas con permisos, esta linea me permite tener permisos de administraciÃ³n global
+GO  -- El GO ejecuta todo lo anterior ahora mismo y espera a que termine antes de seguir con lo que hay despuÃ©s, en sql server lo necesito poner
 
 IF EXISTS (SELECT name FROM sys.databases WHERE name = 'Potencial_Digital_SQL')
 BEGIN
     
-    ALTER DATABASE Potencial_Digital_SQL SET SINGLE_USER WITH ROLLBACK IMMEDIATE; -- Esto es como cuando usabamos el administrador de BBDD para separar la BBDD, quitabamos las conexiones y demás para que no diga "Database in use"
+    ALTER DATABASE Potencial_Digital_SQL SET SINGLE_USER WITH ROLLBACK IMMEDIATE; -- Esto es como cuando usabamos el administrador de BBDD para separar la BBDD, quitabamos las conexiones y demÃ¡s para que no diga "Database in use"
     DROP DATABASE Potencial_Digital_SQL;
     PRINT 'La consulta ha funcionado correctamente :)';
 END
@@ -23,10 +23,10 @@ GO
 
 /*
 
-Con esto ya tendriamos borrada la anterior BBDD, eso sí, más adelante separare esta parte a otra consulta, ya que si se ejecuta 
+Con esto ya tendriamos borrada la anterior BBDD, eso sÃ­, mÃ¡s adelante separare esta parte a otra consulta, ya que si se ejecuta 
 esta completa, puedo llegar a perder la BBDD anterior sin yo quererlo.
 
-Lo de abajo es igual que en el documento, la creacion de tablas y definición de campos, etc...
+Lo de abajo es igual que en el documento, la creacion de tablas y definiciÃ³n de campos, etc...
 
 */
 
@@ -82,11 +82,9 @@ CREATE TABLE fechas_charlas
 (
  idSala tinyint NOT NULL,
  fecha date NOT NULL,
- hora time NOT NULL,
+ hora time(0) NOT NULL,
  idCharla smallint NOT NULL,
-
- CONSTRAINT CK_fc_hora CHECK (hora >= '00:00:00' AND hora < '24:00:00'),
-
+ 
  CONSTRAINT FK_fc_idCharla FOREIGN KEY (idCharla) REFERENCES charlas(idCharla),
  CONSTRAINT FK_fc_idSala FOREIGN KEY (idSala) REFERENCES salas(idSala),
  CONSTRAINT FK_fc_fecha FOREIGN KEY (fecha) REFERENCES fechas(fecha),
@@ -132,11 +130,11 @@ CREATE TABLE usuarios
  deseaComunicacion bit NOT NULL DEFAULT 0,
 
  CONSTRAINT CK_usuarios_tipoUsuario CHECK(tipoUsuario IN ('p','e')),
- CONSTRAINT CK_usuarios_sectorActividad CHECK(sectorActividad IN ('Tecnología','Educación','Salud','Finanzas','Administración Pública','Otros')),
+ CONSTRAINT CK_usuarios_sectorActividad CHECK(sectorActividad IN ('TecnologÃ­a','EducaciÃ³n','Salud','Finanzas','AdministraciÃ³n PÃºblica','Otros')),
 
- CONSTRAINT CK_usuarios_motivacion CHECK(motivacion IN ('Networking y colaboración','Actualización de conocimientos','Búsqueda de soluciones tecnológicas','Inspiración y tendencias del sector','Otros')),
+ CONSTRAINT CK_usuarios_motivacion CHECK(motivacion IN ('Networking y colaboraciÃ³n','ActualizaciÃ³n de conocimientos','BÃºsqueda de soluciones tecnolÃ³gicas','InspiraciÃ³n y tendencias del sector','Otros')),
 
- CONSTRAINT CK_usuarios_comoEntero CHECK(comoEntero IN ('Redes sociales','Correo electrónico','Recomendación','Sitio web','Otros')),
+ CONSTRAINT CK_usuarios_comoEntero CHECK(comoEntero IN ('Redes sociales','Correo electrÃ³nico','RecomendaciÃ³n','Sitio web','Otros')),
 
  CONSTRAINT CK_usuarios_asistirDias CHECK(asistirDias IN ('2 de octubre','3 de octubre','Ambos'))
  
@@ -166,11 +164,4 @@ CONSTRAINT CK_asistencia_votacion CHECK (votacion BETWEEN 1 AND 10),
 
  CONSTRAINT PK_asistencia PRIMARY KEY (idUsuario, idCharla)
 );
-
-
-
-
-
-
-
 
